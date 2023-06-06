@@ -12,7 +12,7 @@ const displayProduct = (products) => {
 
   products
     .map((product) => {
-      const {id, image, title, price, description } = product;
+      const { id, image, title, price, description } = product;
       const splitDescription = description.split(" ");
       const sliceDescription = splitDescription.slice(0, 10);
 
@@ -38,10 +38,9 @@ const displayProduct = (products) => {
     .join(" ");
 };
 loadData(URL);
- 
 
 let count = 0;
-function totalCart(id, price) { 
+function totalCart(id, price) {
   const itemCount = document.getElementById("cart-item");
   // price calculated
   const getPrice = document.getElementById("cart-price");
@@ -53,26 +52,24 @@ function totalCart(id, price) {
   // delivery charges
   const deliveryCharge = document.getElementById("cart-delivery-charge");
   if (price > 0) {
-    if (price > 0 && price <= 300) { 
-deliveryCharge.innerText = 100
-    }
-    else if (price > 301 && price<=800) {
+    if (price > 0 && price <= 300) {
+      deliveryCharge.innerText = 100;
+    } else if (price > 301 && price <= 800) {
       deliveryCharge.innerText = 150;
     } else {
       deliveryCharge.innerText = 300;
     }
-      
   }
   // tax calculate
   const cartTax = document.getElementById("cart-tax");
   let tax = (price + parseFloat(deliveryCharge.innerText)) * (20 / 100);
-  
-  tax = tax.toFixed(2)
-  console.log(typeof(toFixed(2)))
-  cartTax.innerText = tax
+  tax = tax.toFixed(2);
+  cartTax.innerText = tax;
   const cartGrand = document.getElementById("cart-grand");
-  const grandTotal = parseFloat(cartGrand.innerText);
-  const total = (grandTotal + price + parseFloat(deliveryCharge.innerText))+parseFloat(tax);
-  cartGrand.innerText=total;
-    
+  let grandTotal = parseFloat(cartGrand.innerText);
+
+  grandTotal =
+    price + parseFloat(deliveryCharge.innerText) + parseFloat(tax);
+
+  cartGrand.innerText = grandTotal.toFixed(2);
 }
