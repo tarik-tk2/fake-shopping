@@ -1,20 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
     <title>Fake-Shopping</title>
-</head>
-<body>
-    
- <header>
-    <nav></nav>
- </header>
+  </head>
+  <body>
+    <header>
+      <nav class="w-75 mx-auto border border-primary"></nav>
+      <div class="input-group mb-3 w-50 mx-auto p-3">
+        <input
+          type="text"
+          class="form-control p-2 shadow-none btn-outline-none"
+          placeholder="search your favorite ...."
+          aria-label="search your favorite ...."
+          aria-describedby="button-addon2"
+        />
+        <button
+          class="btn p-2 bg-success text-white"
+          type="button"
+          id="button-addon2"
+        >
+          Search
+        </button>
+      </div>
+    </header>
+    <section class="d-flex position-relative">
+        <!-- container -->
+      <div class="row row-cols-1 row-cols-md-4 g-4 w-75" id="container"></div>
 
-    <script src="script/sc"></script>
-    
-</body>
+      <!-- cart -->
+      <div class="w-25 m-5 mx-auto position-fixed end-0">
+        
+        <div class="card"  >
+  <div class="card-body">
+    <h4 class="text-center fw-bold bg-success p-2 text-white ">My-Cart</h4>
+     <div class="d-flex">
+        <div>
+        <ul class="text-start text-decoration-none list-unstyled fw-semibold p-4 ">
+            <li >Total Cart</li>
+            <li>Total Price</li>
+            <li>Delivery-Charge</li>
+            <li>Total-Tax</li>
+            <div class="border border-black"></div>
+            <li>Grand-Total</li>
+        </ul>
+     </div>
+     <div>
+        <ul class="text-start list-unstyled text-decoration-none fw-semibold p-4">
+            <li>: <span class="ms-2" id="cart-item">00</span></li>
+            <li>:<span class="ms-2" id="cart-price">00</span>$</li>
+            <li>:<span class="ms-2" id="cart-delivery-charge">00</span>$</li>
+            <li>:<span class="ms-2" id="cart-tax">00</span>$</li>
+            <div class="border border-black"></div>
+            <li>:<span class="ms-2" id="cart-grand">000</span>$</li>
+        </ul>
+     </div>
+     </div>
+     <button class="btn btn-success text-white fw-bold w-100 ">Buy</button>
+  </div>
+</div>
+
+      </div>
+    </section>
+
+    <script src="script/script.js"></script>
+  </body>
 </html>
