@@ -8,7 +8,6 @@ const loadData = async (url) => {
 };
 
 const displayProduct = (products) => {
-
   products
     .map((product) => {
       const { id, image, title, price, description } = product;
@@ -38,63 +37,78 @@ const displayProduct = (products) => {
 };
 loadData(URL);
 
-const textInner = (id) => { 
+const textInner = (id) => {
   const element = document.getElementById(id);
   return element;
+};
+// item count calculated
+let count = 0;
+const itemCalculated = () => {
+  const cartItem = textInner("cart-item");
+  count = count + 1;
+  if (count < 10) {
+    cartItem.innerText = "0" + count;
+  } else {
+    cartItem.innerText = count;
+  }
+};
 
-} 
-const itemCalculated = (initial) => { 
-const cartItem = textInner("cart-item");
-count = count + 1;
-if (count < 10) {
-  cartItem.innerText = "0" + count;
-} else {
-  cartItem.innerText = count;
-}
-}
+// price calculate function
 
- let count=0
-const cartCalculate = (id, price) => { 
+const updatePrice = (id, price) => {
+  const getPrice = textInner(id).innerText;
+  const totalPrice = parseFloat(price) + parseFloat(getPrice);
+  return totalPrice;
+};
+
+// delivery charge calculated
+const DeliveryCalculated = (price) => {
   
- itemCalculated(count) 
- 
+  let charge = 0;
+  if (price >= 0 && price < 400) {
+    charge = 50;
+  }
+   else if (price >= 400 && price < 1000) {
+    charge = 80;
+  } else if (price >= 1000 && price < 1500) {
+    charge = 100;
+  }
+   else {
+    charge = 150;
+  }
+
+  return charge;
+};
+
+//tax calculation
+const taxCalculation = (price, charge) => {
+  const tax = (price + charge) * .20;
+  return tax;
   
 }
+// grand total calculation
+const granTotal = (price, charge, tax) => {
+  const total = price + charge + tax;
+  return total;
+ }
 
+const cartCalculate = (id, price) => {
+  //count item
+  itemCalculated();
+  // calculate price
+  let newPrice = updatePrice("cart-price", price);
+  textInner("cart-price").innerText = Math.round(newPrice);
+  // delivery charge calculation
 
+  let newCharge = DeliveryCalculated(newPrice);
+  textInner("cart-delivery-charge").innerText = Math.round(newCharge);
 
+  // tax  calculation
+  let newTax = taxCalculation(newPrice, newCharge);
+  textInner("cart-tax").innerText = Math.round(newTax);
+  // grand total calculation
 
-// let count = 0;
-// function totalCart(id, price) {
-//   const itemCount = document.getElementById("cart-item");
-//   console.log(itemCount)
-//   // price calculated
+  const newTotal = granTotal(newPrice, newCharge, newTax);
+  textInner("cart-grand").innerText = Math.round(newTotal)
+};
 
-//   const getPrice = elementGet("cart-price");
-
-//   price = parseFloat(getPrice) + parseFloat(price);
-//   getPrice.innerText = price.toFixed(2);
-//   // delivery charges
-//   const deliveryCharge = document.getElementById("cart-delivery-charge");
-//   if (price > 0) {
-//     if (price > 0 && price <= 300) {
-//       deliveryCharge.innerText = 100;
-//     } else if (price > 301 && price <= 800) {
-//       deliveryCharge.innerText = 150;
-//     } else {
-//       deliveryCharge.innerText = 300;
-//     }
-//   }
-//   // tax calculate
-//   const cartTax = document.getElementById("cart-tax");
-//   let tax = (price + parseFloat(deliveryCharge.innerText)) * (20 / 100);
-//   tax = tax.toFixed(2);
-//   cartTax.innerText = tax;
-//   const cartGrand = document.getElementById("cart-grand");
-//   let grandTotal = parseFloat(cartGrand.innerText);
-
-//   grandTotal =
-//     price + parseFloat(deliveryCharge.innerText) + parseFloat(tax);
-
-//   cartGrand.innerText = grandTotal.toFixed(2);
-// }
