@@ -1,5 +1,6 @@
 const container = document.getElementById("container");
 const modalContainer = document.getElementById("modal-area");
+const spinner=document.getElementById("spinner");
 
 const URL = "https://fakestoreapi.com/products";
 const loadData = async (url) => {
@@ -9,6 +10,9 @@ const loadData = async (url) => {
 };
 
 const displayProduct = (products) => {
+  if (!products.length) { 
+    spinner.classList.remove("d-none")
+  }
   products
     .map((product) => {
       const { id, image, title, price, description, category, rating } =
@@ -49,6 +53,7 @@ const displayProduct = (products) => {
       container.appendChild(createDiv);
     })
     .join(" ");
+  spinner.classList.add("d-none");
 };
 loadData(URL);
 
