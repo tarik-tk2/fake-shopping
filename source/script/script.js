@@ -1,4 +1,5 @@
 const container = document.getElementById("container");
+const modalContainer = document.getElementById("modal-area");
 
 const URL = "https://fakestoreapi.com/products";
 const loadData = async (url) => {
@@ -10,7 +11,10 @@ const loadData = async (url) => {
 const displayProduct = (products) => {
   products
     .map((product) => {
-      const { id, image, title, price, description } = product;
+      const { id, image, title, price, description, category, rating } =
+        product;
+      const rate = Object.values(rating);
+
       const splitDescription = description.split(" ");
       const sliceDescription = splitDescription.slice(0, 10);
 
@@ -20,14 +24,24 @@ const displayProduct = (products) => {
       createDiv.classList.add("col");
       createDiv.innerHTML = `
     <div class="card h-75">
-      <img src="${image}" class="card-img-top h-50" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">${title}</h5>
-        <p class="card-text">${joinDescription}<a href="#" class="text-decoration-none">Read more...</a></p>
-      </div>
-      <h5>${price}$</h5>
-      <button type="button" class="btn bg-success mb-5 w-50" onclick="cartCalculate(${id},${price})">Add to cart</button>
+      <div class="h-50  ">
+      <img src="${image}" class="card-img-top h-100 p-4 " alt="...">
+      </div
+      <div class="card-body h-50 px-3  position-relative">
+       <h5 class="text-center">${title}</h5>
+       <div class="d-flex justify-content-between">
+        <p class="ps-2 fw-bold">Rating: ${rate[0]}/${rate[1]}</p>
+         <p class="fw-bold">Category: ${category}<p/>
+       </div>
+      
 
+       <div class="d-flex px-4 position-absolute bottom-0 justify-content-between w-100 pb-2">
+       <button class="btn btn-success text-white fw-medium" type="button" data-bs-toggle="modal" data-bs-target="#modalContainer" onclick=(modalShow(${id}))>Details</button>
+       <button class="btn btn-danger text-white fw-medium" type="button" onclick=(cartCalculate(${id},${price}))>Add To Cart</button>
+       </div>
+        
+      </div>
+      
     </div>
     
     `;
@@ -36,6 +50,39 @@ const displayProduct = (products) => {
     .join(" ");
 };
 loadData(URL);
+
+// modal show
+const modalShow = (id) => {
+  fetch(`https://fakestoreapi.com/products/${id}`)
+    .then((response) => response.json())
+    .then((result) => displayModal(result));
+};
+
+const displayModal = (product) => {
+  const {id, title, price, rating, image, category, description } = product;
+  const rate = Object.values(rating);
+ 
+  modalContainer.innerHTML = `
+        <img src="${image}" class="w-100 h-50 px-5 pb-2">
+        <h5 class="text-center">${title}</h5>
+        <div class="d-flex ">
+        <div class='w-50 px-4'>
+        <p class="w-50 fw-bold">Description </p>
+        <p> ${description}</p>
+        </div>
+        <div class="w-50 ps-5 mt-5">
+         <p class="fw-bold">Category: ${category}<p>
+         <p>Rating: ${rate[0]}/${rate[1]}</p>
+         <h5>Price: ${price}<h5>
+
+        </div>
+        </div>
+        <div class="d-flex justify-content-center"><button class="btn btn-success border-0  " onclick=(cartCalculate(${id},${price}))> Add to Cart</button></div>
+
+
+  `;
+
+};
 
 const textInner = (id) => {
   const element = document.getElementById(id);
@@ -63,17 +110,14 @@ const updatePrice = (id, price) => {
 
 // delivery charge calculated
 const DeliveryCalculated = (price) => {
-  
   let charge = 0;
   if (price >= 0 && price < 400) {
     charge = 50;
-  }
-   else if (price >= 400 && price < 1000) {
+  } else if (price >= 400 && price < 1000) {
     charge = 80;
   } else if (price >= 1000 && price < 1500) {
     charge = 100;
-  }
-   else {
+  } else {
     charge = 150;
   }
 
@@ -82,15 +126,14 @@ const DeliveryCalculated = (price) => {
 
 //tax calculation
 const taxCalculation = (price, charge) => {
-  const tax = (price + charge) * .20;
+  const tax = (price + charge) * 0.2;
   return tax;
-  
-}
+};
 // grand total calculation
 const granTotal = (price, charge, tax) => {
   const total = price + charge + tax;
   return total;
- }
+};
 
 const cartCalculate = (id, price) => {
   //count item
@@ -109,6 +152,5 @@ const cartCalculate = (id, price) => {
   // grand total calculation
 
   const newTotal = granTotal(newPrice, newCharge, newTax);
-  textInner("cart-grand").innerText = Math.round(newTotal)
+  textInner("cart-grand").innerText = Math.round(newTotal);
 };
-
