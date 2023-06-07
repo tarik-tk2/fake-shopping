@@ -29,12 +29,13 @@ const displayProduct = (products) => {
       </div
       <div class="card-body h-50 px-3  position-relative">
        <h5 class="text-center">${title}</h5>
+      
        <div class="d-flex justify-content-between">
         <p class="ps-2 fw-bold">Rating: ${rate[0]}/${rate[1]}</p>
          <p class="fw-bold">Category: ${category}<p/>
        </div>
       
-
+ <h5 class="px-3"> Price : ${price}$</h5>
        <div class="d-flex px-4 position-absolute bottom-0 justify-content-between w-100 pb-2">
        <button class="btn btn-success text-white fw-medium" type="button" data-bs-toggle="modal" data-bs-target="#modalContainer" onclick=(modalShow(${id}))>Details</button>
        <button class="btn btn-danger text-white fw-medium" type="button" onclick=(cartCalculate(${id},${price}))>Add To Cart</button>
@@ -50,6 +51,7 @@ const displayProduct = (products) => {
     .join(" ");
 };
 loadData(URL);
+
 
 // modal show
 const modalShow = (id) => {
@@ -89,15 +91,12 @@ const textInner = (id) => {
   return element;
 };
 // item count calculated
-let count = 0;
+
 const itemCalculated = () => {
-  const cartItem = textInner("cart-item");
+  const cartItem = textInner("cart-item").innerText;
+  let count= parseInt(cartItem)
   count = count + 1;
-  if (count < 10) {
-    cartItem.innerText = "0" + count;
-  } else {
-    cartItem.innerText = count;
-  }
+ return count
 };
 
 // price calculate function
@@ -137,7 +136,13 @@ const granTotal = (price, charge, tax) => {
 
 const cartCalculate = (id, price) => {
   //count item
-  itemCalculated();
+  const newCount = itemCalculated();
+   if (newCount < 10) {
+     textInner("cart-item").innerText = "0" + newCount;
+   } else {
+     textInner("cart-item").innerText = newCount;
+   }
+ 
   // calculate price
   let newPrice = updatePrice("cart-price", price);
   textInner("cart-price").innerText = Math.round(newPrice);
@@ -153,4 +158,46 @@ const cartCalculate = (id, price) => {
 
   const newTotal = granTotal(newPrice, newCharge, newTax);
   textInner("cart-grand").innerText = Math.round(newTotal);
+  setStorage(newCount, newPrice, newCharge, newTax, newTotal);
 };
+
+
+
+// local storage
+
+const getStorage = () => { 
+  let cart = {};
+  const storeData = window.localStorage.getItem("cart");
+  if (storeData) { 
+    cart=JSON.parse(storeData);
+  }
+  return cart;
+}
+const setStorage = (item,price,tax,charge,total) => {
+  const cart = getStorage();
+  cart['item'] = Math.round(item);
+  cart['price'] = Math.round(price);
+  cart['tax'] = Math.round(tax);
+  cart['charge'] = Math.round(charge);
+  cart['total'] = Math.round(total);
+  const stringyCart = JSON.stringify(cart)
+  localStorage.setItem("cart", stringyCart);
+}
+const displayCart = () => {
+  const cart = getStorage();
+  const newCart = Object.values(cart);
+  for (let i = 0; i < newCart.length - 1; i++) { 
+    if (newCart[0] < 10) {
+      textInner("cart-item").innerText ="0"+newCart[0];
+    } else {
+      textInner("cart-item").innerText = newCart[0];
+    }
+    
+    textInner("cart-price").innerText = newCart[1];
+    textInner("cart-delivery-charge").innerText = newCart[2];
+    textInner("cart-tax").innerText = newCart[3];
+    textInner("cart-grand").innerText = newCart[4];
+  }
+   
+}
+ displayCart()
